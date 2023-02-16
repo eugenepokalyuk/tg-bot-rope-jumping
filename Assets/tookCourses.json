@@ -1,0 +1,41 @@
+{
+    "Free Code Camp": [{
+        "name": "Responsive Web Design",
+        "link": "https://www.freecodecamp.org/certification/eugene.pokalyuk/responsive-web-design"
+    }, {
+        "name": "JavaScript Algorithms and Data Structures",
+        "link": "https://www.freecodecamp.org/certification/eugene.pokalyuk/javascript-algorithms-and-data-structures"
+    }, {
+        "name": "Front End Development Libraries",
+        "link": "https://www.freecodecamp.org/certification/eugene.pokalyuk/front-end-development-libraries"
+    }],
+    "HTML Academy": [{
+        "name": "Старт во фронтенде",
+        "link": "https://htmlacademy.ru/profile/id137373"
+    }, {
+        "name": "Погружение в вёрстку",
+        "link": "https://htmlacademy.ru/profile/id137373"
+    }, {
+        "name": "Погружение в JavaScript",
+        "link": "https://htmlacademy.ru/profile/id137373"
+    }, {
+        "name": "Продвинутые техники и инструменты вёрстки",
+        "link": "https://htmlacademy.ru/profile/id137373"
+    }, {
+        "name": "Знакомство с бэкендом",
+        "link": "https://htmlacademy.ru/profile/id137373"
+    }, {
+        "name": "Ретровёрстка",
+        "link": "https://htmlacademy.ru/profile/id137373"
+    }],
+    "Skillbox": [{
+        "name": "Веб-верстка «Базовый уровень», «Продвинутый уровень»",
+        "link": "https://skillbox.ru"
+    }, {
+        "name": "JavaScript «Базовый уровень», «Продвинутый уровень»",
+        "link": "https://skillbox.ru"
+    }, {
+        "name": "Node.js",
+        "link": "https://skillbox.ru"
+    }]
+}

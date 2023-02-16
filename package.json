@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "node-telegram-bot-api": "^0.61.0",
+    "nodemon": "^2.0.20",
+    "sqlite3": "^5.1.4"
+  },
+  "name": "tg-bot-rope-jumping",
+  "version": "1.0.0",
+  "main": "App.js",
+  "scripts": {
+    "start": "nodemon App.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {},
+  "description": ""
+}
