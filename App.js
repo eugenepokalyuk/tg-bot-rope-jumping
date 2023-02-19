@@ -93,46 +93,38 @@ bot.on('callback_query', async (query) => {
             for (let j = 0; j < arrayTypes.length; j++) {
                 switch (data) {
                     case arrayTypes[j][0].callback_data:
-                        // const option = [
-                        //     {
-                        //         type: 'photo',
-                        //         media: 'https://cdn.searchenginejournal.com/wp-content/uploads/2022/06/image-search-1600-x-840-px-62c6dc4ff1eee-sej.png',
-                        //         caption: 'Image One'
-                        //     },
-                        //     {
-                        //         type: 'photo',
-                        //         media: 'https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg',
-                        //         caption: 'Image Two'
-                        //     },
-                        //     {
-                        //         type: 'photo',
-                        //         media: 'https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8&w=1000&q=80',
-                        //         caption: 'Image Three'
-                        //     },
-                        //     {
-                        //         type: 'text',
-                        //         text: 'This is text message',
-                        //         reply_markup: {
-                        //             inline_keyboard: [
-                        //                 // ...await getProducts(arraySeasons[i][0].callback_data, data),
-                        //                 [{ text: '❌ Назад', callback_data: 'Catalog' }],
-                        //             ]
-                        //         }
-                        //     }
-                        // ]
-                        // bot.sendMediaGroup(msg.chat.id, option);
-                        bot.editMessageText("[Вот вам шапочка!](https://raw.githubusercontent.com/eugenepokalyuk/profile/main/images/logo__orange.png?token=GHSAT0AAAAAAB436I4NWUYYBSEXZCX6WECUY7RDTVQ)\nЦвет синий\nЦена 5 млн рублей", {
-                            chat_id: msg.chat.id,
-                            message_id: msg.message_id,
-                            parse_mode: "markdown",
-                            reply_markup: {
-                                inline_keyboard: [
-                                    ...await getProducts(arraySeasons[i][0].callback_data, data),
-                                    [{ text: '❌ Назад', callback_data: 'Catalog' }],
-                                ]
-                            }
-                        });
-                        sended = true;
+                        let product = await getProducts(arraySeasons[i][0].callback_data, data);
+                        if (product.length != 0) {
+                            let arr = product;
+                            console.log("product", arr[0])
+                            bot.editMessageText(`[ ](${arr[0].image})\nОписание товара`, {
+                                chat_id: msg.chat.id,
+                                message_id: msg.message_id,
+                                parse_mode: "markdown",
+                                reply_markup: {
+                                    inline_keyboard: [
+                                        // ...await getProducts(arraySeasons[i][0].callback_data, data),
+                                        [{ text: `id ${arr[0].id}`, callback_data: `back` }, { text: `article_number ${arr[0].article_number}`, callback_data: `back` }, { text: `season_id ${await getSeasonId(arr[0].season_id)}`, callback_data: `back` }],
+                                        [{ text: `type_id ${arr[0].type_id}`, callback_data: `back` }, { text: `color_id ${arr[0].color_id}`, callback_data: `back` }, { text: `size_id ${arr[0].size_id}`, callback_data: `back` }],
+                                        [{ text: `composition_id ${arr[0].composition_id}`, callback_data: `back` }, { text: `price ${arr[0].price}`, callback_data: `back` }],
+
+                                        [{ text: '❌ Назад', callback_data: 'back' }],
+                                    ]
+                                }
+                            });
+                            sended = true;
+                        } else {
+                            bot.editMessageText(`К сожалению, тут пусто 🤷‍♂️`, {
+                                chat_id: msg.chat.id,
+                                message_id: msg.message_id,
+                                parse_mode: "markdown",
+                                reply_markup: {
+                                    inline_keyboard: [
+                                        [{ text: '❌ Назад', callback_data: 'Catalog' }],
+                                    ]
+                                }
+                            });
+                        }
                         break;
                     case arraySeasons[i][0].callback_data:
                         bot.editMessageText(`📒 Каталог => ${data}`, {
@@ -428,19 +420,34 @@ async function getProducts(seasonName, typeName) {
             })
             db.close((err) => { if (err) { console.error(err) } })
 
-            console.log(await temp);
-            if (await temp.length == 0) {
-                return [
-                    [{ text: `Тут ничего нет`, callback_data: `n\\f` }]
-                ]
-            } else {
-                return [
-                    [{ text: `1 товар`, callback_data: `item` }, { text: `2 товар`, callback_data: `item` }],
-                    [{ text: `1 товар`, callback_data: `item` }, { text: `2 товар`, callback_data: `item` }, { text: `3 товар`, callback_data: `item` }],
-                    [{ text: `1 товар`, callback_data: `item` }, { text: `2 товар`, callback_data: `item` }, { text: `3 товар`, callback_data: `item` }, { text: `4 товар`, callback_data: `item` }],
-                    [{ text: `XS`, callback_data: `item` }, { text: `S`, callback_data: `item` }, { text: `M`, callback_data: `item` }, { text: `L`, callback_data: `item` }, { text: `XL`, callback_data: `item` }],
-                ]
-            }
+            // let a = await temp;
+            // let b = {
+            //     1: await getSeasonId(a[0].season_id),
+            //     2: await getTypeId(a[0].type_id),
+            //     3: await getColorId(a[0].color_id),
+            //     4: await getSizeId(a[0].size_id),
+            //     5: await getCompositionId(a[0].composition_id),
+            // };
+
+            // console.log(await b)
+
+            return await temp;
+            // if (await temp.length == 0) {
+            //     return [
+            //         [{ text: `Тут ничего нет`, callback_data: `n\\f` }]
+            //     ]
+            // } else {
+            //     // 🟥🟧🟨🟩🟦🟪⬛️⬜️🟫◀️▶️⬅️➡️
+            //     // ⬆️⬇️
+            // return [
+            //     [{ text: `1 товар`, callback_data: `item` }, { text: `2 товар`, callback_data: `item` }],
+            //     [{ text: `⬅️`, callback_data: `item` }, { text: `➡️`, callback_data: `item` }],
+            //     [{ text: `Цвет: 🟦`, callback_data: `item` }, { text: `Размер: M`, callback_data: `item` }],
+            //     [{ text: `Цена: 5000`, callback_data: `item` }],
+            //     [{ text: `1 товар`, callback_data: `item` }, { text: `2 товар`, callback_data: `item` }, { text: `3 товар`, callback_data: `item` }, { text: `4 товар`, callback_data: `item` }],
+            //     [{ text: `XS`, callback_data: `item` }, { text: `S`, callback_data: `item` }, { text: `M`, callback_data: `item` }, { text: `L`, callback_data: `item` }, { text: `XL`, callback_data: `item` }],
+            // ]
+            // }
         }
     } catch (error) {
         console.error(error)
@@ -459,8 +466,8 @@ async function getSeasonId(data) {
             })
         })
         db.close((err) => { if (err) { console.error(err) } })
-
-        return await season_id;
+        let temp = await season_id;
+        return temp;
     } catch (error) {
         console.error(error)
     }
@@ -479,6 +486,60 @@ async function getTypeId(data) {
         db.close((err) => { if (err) { console.error(err) } })
 
         return await season_id;
+    } catch (error) {
+        console.error(error)
+    }
+}
+async function getColorId(data) {
+    try {
+        let db = new sqlite3.Database('./data.db', (err) => { if (err) { console.error(err) } });
+        let color_id = new Promise(async (resolve, rejects) => {
+            db.each(`SELECT color_id as id FROM Color WHERE color_name="${data}"`, async (err, row) => {
+                if (err) {
+                    console.error(err)
+                }
+                resolve(await row["id"])
+            })
+        })
+        db.close((err) => { if (err) { console.error(err) } })
+
+        return await color_id;
+    } catch (error) {
+        console.error(error)
+    }
+}
+async function getSizeId(data) {
+    try {
+        let db = new sqlite3.Database('./data.db', (err) => { if (err) { console.error(err) } });
+        let size_id = new Promise(async (resolve, rejects) => {
+            db.each(`SELECT size_id as id FROM Size WHERE size_name="${data}"`, async (err, row) => {
+                if (err) {
+                    console.error(err)
+                }
+                resolve(await row["id"])
+            })
+        })
+        db.close((err) => { if (err) { console.error(err) } })
+
+        return await size_id;
+    } catch (error) {
+        console.error(error)
+    }
+}
+async function getCompositionId(data) {
+    try {
+        let db = new sqlite3.Database('./data.db', (err) => { if (err) { console.error(err) } });
+        let composition_id = new Promise(async (resolve, rejects) => {
+            db.each(`SELECT composition_id as id FROM Composition WHERE composition_name="${data}"`, async (err, row) => {
+                if (err) {
+                    console.error(err)
+                }
+                resolve(await row["id"])
+            })
+        })
+        db.close((err) => { if (err) { console.error(err) } })
+
+        return await composition_id;
     } catch (error) {
         console.error(error)
     }
